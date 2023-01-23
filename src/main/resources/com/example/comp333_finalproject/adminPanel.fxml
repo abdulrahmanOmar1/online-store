@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="696.0" prefWidth="1037.0" style="-fx-background-color: #212121;" stylesheets="@mainScene.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.comp333_finalproject.MainController">
+   <children>
+      <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="150.0" spacing="20.0" styleClass="menubar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Button mnemonicParsing="false" styleClass="menu_button" text="Customers" VBox.vgrow="ALWAYS" />
+            <Button mnemonicParsing="false" styleClass="menu_button" text="Items" />
+            <Button mnemonicParsing="false" styleClass="menu_button" text="Customers" />
+         </children>
+         <padding>
+            <Insets top="15.0" />
+         </padding></VBox>
+      <TableView fx:id="customersTable" layoutX="160.0" layoutY="14.0" prefHeight="666.0" prefWidth="1063.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="165.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+        <columns>
+          <TableColumn fx:id="tCol_id" editable="false" prefWidth="70.40005493164062" text="ID" />
+            <TableColumn prefWidth="233.60003662109375" text="Name">
+               <columns>
+                  <TableColumn fx:id="tCol_fName" editable="false" prefWidth="100.0" text="First" />
+                  <TableColumn fx:id="tCol_lName" editable="false" prefWidth="100.0" text="Last" />
+               </columns>
+            </TableColumn>
+            <TableColumn prefWidth="164.79995727539062" text="Address">
+               <columns>
+                  <TableColumn fx:id="tCol_city" editable="false" minWidth="0.0" prefWidth="100.0" text="City" />
+                  <TableColumn fx:id="tCol_street" editable="false" minWidth="0.0" prefWidth="100.0" text="Street" />
+                  <TableColumn fx:id="tCol_building" editable="false" minWidth="0.0" prefWidth="100.0" text="Building" />
+               </columns>
+            </TableColumn>
+            <TableColumn minWidth="220.0" prefWidth="220.0" text="Mobile Number">
+               <columns>
+                  <TableColumn fx:id="tCol_mobile1" editable="false" prefWidth="100.0" text="Primary" />
+                  <TableColumn fx:id="tCol_mobile2" editable="false" prefWidth="100.0" text="Secondary" />
+               </columns>
+            </TableColumn>
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>
