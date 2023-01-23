@@ -31,15 +31,17 @@ public class LoginController {
         String username = usernameTextfield.getText();
         String password = passwordTextfield.getText();
         try {
-            if (userExists(username, password)) {
-                openUserPanel();
+            if (isAdmin(username, password))
+                openAdminStage();
+            else if (userExists(username, password))
+                openAdminStage();
+            else {
+                incorrectInfoLabel.setText("Username or password is incorrect");
+                incorrectInfoLabel.setVisible(true);
+                usernameTextfield.setText("");
+                passwordTextfield.setText("");
             }
-        }catch (SQLException sqlException){
-            incorrectInfoLabel.setText("Username or password is incorrect");
-            usernameTextfield.setText("");
-            passwordTextfield.setText("");
-            sqlException.printStackTrace();
-        }catch (ClassNotFoundException | IOException exception){
+        }catch (ClassNotFoundException | IOException | SQLException exception){
             incorrectInfoLabel.setText("HARD ERROR");
             usernameTextfield.setText("");
             passwordTextfield.setText("");
@@ -47,6 +49,10 @@ public class LoginController {
         }
 
 
+    }
+
+    private boolean isAdmin(String username, String password) {
+        return (username.equals("chrisROOT23") && password.equals("220ROOT$"));
     }
 
     @FXML
@@ -62,14 +68,13 @@ public class LoginController {
         thisStage.close();
     }
 
-    private void openUserPanel() throws IOException {
+    private void openAdminStage() throws IOException {
         Stage stage = new Stage();
         FXMLLoader fxmlLoader = new FXMLLoader(Driver.class.getResource("adminPanel.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("COMP333 Project");
         stage.setScene(scene);
         stage.setResizable(false);
-        stage.setMaximized(true);
         stage.show();
         Stage thisStage = (Stage) loginButton.getScene().getWindow();
         thisStage.close();

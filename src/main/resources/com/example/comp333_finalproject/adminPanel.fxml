@@ -2,45 +2,109 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="696.0" prefWidth="1037.0" style="-fx-background-color: #212121;" stylesheets="@mainScene.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.comp333_finalproject.MainController">
+<AnchorPane prefHeight="696.0" prefWidth="1180.0" style="-fx-background-color: #212121;" stylesheets="@mainScene.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.comp333_finalproject.MainController">
    <children>
       <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="150.0" spacing="20.0" styleClass="menubar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Button mnemonicParsing="false" styleClass="menu_button" text="Customers" VBox.vgrow="ALWAYS" />
-            <Button mnemonicParsing="false" styleClass="menu_button" text="Items" />
-            <Button mnemonicParsing="false" styleClass="menu_button" text="Customers" />
+            <Button fx:id="button_customers" mnemonicParsing="false" onAction="#openCustomersMenu" prefWidth="132.0" styleClass="menu_button" text="Customers" VBox.vgrow="ALWAYS" />
+            <Button fx:id="button_items" mnemonicParsing="false" onAction="#openItemsMenu" prefWidth="132.0" styleClass="menu_button" text="Items" />
          </children>
          <padding>
             <Insets top="15.0" />
          </padding></VBox>
-      <TableView fx:id="customersTable" layoutX="160.0" layoutY="14.0" prefHeight="666.0" prefWidth="1063.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="165.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
-        <columns>
-          <TableColumn fx:id="tCol_id" editable="false" prefWidth="70.40005493164062" text="ID" />
-            <TableColumn prefWidth="233.60003662109375" text="Name">
+      <AnchorPane fx:id="pane_customers" layoutX="165.0" layoutY="15.0" visible="false" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="165.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+         <children>
+            <TableView fx:id="customersTable" layoutY="100.0" maxWidth="845.0" prefHeight="566.0" prefWidth="1004.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
+              <columns>
+                <TableColumn fx:id="customer_tCol_id" editable="false" prefWidth="60.0" resizable="false" text="ID" />
+                  <TableColumn prefWidth="224.79998779296875" text="Name">
+                     <columns>
+                        <TableColumn fx:id="customer_tCol_fName" editable="false" prefWidth="120.0" resizable="false" text="First" />
+                        <TableColumn fx:id="customer_tCol_lName" editable="false" prefWidth="120.0" resizable="false" text="Last" />
+                     </columns>
+                  </TableColumn>
+                  <TableColumn prefWidth="312.7999572753906" text="Address">
+                     <columns>
+                        <TableColumn fx:id="customer_tCol_city" editable="false" minWidth="0.0" prefWidth="120.0" resizable="false" text="City" />
+                        <TableColumn fx:id="customer_tCol_street" editable="false" minWidth="0.0" prefWidth="140.0" resizable="false" text="Street" />
+                        <TableColumn fx:id="customer_tCol_building" editable="false" minWidth="0.0" prefWidth="120.0" resizable="false" text="Building" />
+                     </columns>
+                  </TableColumn>
+                  <TableColumn minWidth="146.39996337890625" prefWidth="279.199951171875" text="Mobile Number">
+                     <columns>
+                        <TableColumn fx:id="customer_tCol_mobile1" editable="false" prefWidth="140.0" resizable="false" text="Primary" />
+                        <TableColumn fx:id="customer_tCol_mobile2" editable="false" prefWidth="140.0" resizable="false" text="Secondary" />
+                     </columns>
+                  </TableColumn>
+              </columns>
+            </TableView>
+            <HBox prefHeight="90.0" prefWidth="857.0" spacing="30.0" styleClass="top_menu" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <VBox prefHeight="86.0" prefWidth="140.0" spacing="5.0">
+                     <children>
+                        <Label styleClass="top_menu_label" text="Search Name" />
+                        <TextField fx:id="textfield_searchName" styleClass="top_menu_textfield" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="86.0" prefWidth="160.0" spacing="5.0">
+                     <children>
+                        <Label styleClass="top_menu_label" text="Search Address" />
+                        <TextField fx:id="textfield_searchAddress" styleClass="top_menu_textfield" />
+                     </children>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+               </padding>
+            </HBox>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="pane_items" layoutX="175.0" layoutY="25.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="165.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+         <children>
+            <TableView fx:id="itemsTable" layoutY="100.0" maxWidth="845.0" prefHeight="566.0" prefWidth="675.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="325.0">
                <columns>
-                  <TableColumn fx:id="tCol_fName" editable="false" prefWidth="100.0" text="First" />
-                  <TableColumn fx:id="tCol_lName" editable="false" prefWidth="100.0" text="Last" />
+                  <TableColumn fx:id="items_tCol_id" editable="false" prefWidth="60.0" resizable="false" text="ID" />
+                  <TableColumn fx:id="items_tCol_name" editable="false" prefWidth="112.00007629394531" text="Name" />
+                  <TableColumn fx:id="items_tCol_brand" editable="false" prefWidth="120.0" text="Brand" />
+                  <TableColumn fx:id="items_tCol_quantity" editable="false" prefWidth="112.00007629394531" text="Quantity" />
+                  <TableColumn fx:id="items_tCol_price" editable="false" prefWidth="112.00007629394531" text="Price" />
+                  <TableColumn fx:id="items_tCol_color" editable="false" prefWidth="110.39990234375" text="Color" />
                </columns>
-            </TableColumn>
-            <TableColumn prefWidth="164.79995727539062" text="Address">
-               <columns>
-                  <TableColumn fx:id="tCol_city" editable="false" minWidth="0.0" prefWidth="100.0" text="City" />
-                  <TableColumn fx:id="tCol_street" editable="false" minWidth="0.0" prefWidth="100.0" text="Street" />
-                  <TableColumn fx:id="tCol_building" editable="false" minWidth="0.0" prefWidth="100.0" text="Building" />
-               </columns>
-            </TableColumn>
-            <TableColumn minWidth="220.0" prefWidth="220.0" text="Mobile Number">
-               <columns>
-                  <TableColumn fx:id="tCol_mobile1" editable="false" prefWidth="100.0" text="Primary" />
-                  <TableColumn fx:id="tCol_mobile2" editable="false" prefWidth="100.0" text="Secondary" />
-               </columns>
-            </TableColumn>
-        </columns>
-      </TableView>
+            </TableView>
+            <HBox prefHeight="90.0" prefWidth="857.0" spacing="30.0" styleClass="top_menu" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <VBox prefHeight="86.0" prefWidth="140.0" spacing="5.0">
+                     <children>
+                        <Label styleClass="top_menu_label" text="Search Name" />
+                        <TextField fx:id="item_textfield_searchName" styleClass="top_menu_textfield" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="86.0" prefWidth="160.0" spacing="5.0">
+                     <children>
+                        <Label styleClass="top_menu_label" text="Search Brand" />
+                        <TextField fx:id="item_textfield_searchBrand" styleClass="top_menu_textfield" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="86.0" prefWidth="160.0" spacing="5.0">
+                     <children>
+                        <Label styleClass="top_menu_label" text="Search Color" />
+                        <TextField fx:id="item_textfield_searchColor" styleClass="top_menu_textfield" />
+                     </children>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+               </padding>
+            </HBox>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

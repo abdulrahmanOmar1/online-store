@@ -7,17 +7,17 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="240.0" prefWidth="320.0" style="-fx-background-color: #212121;" styleClass="root" stylesheets="@loginScene.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.comp333_finalproject.LoginController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="240.0" prefWidth="528.0" style="-fx-background-color: #212121;" styleClass="root" stylesheets="@loginScene.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.comp333_finalproject.LoginController">
    <children>
       <TextField fx:id="usernameTextfield" layoutX="62.0" layoutY="54.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="200.0" promptText="Username" styleClass="textfield" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="50.0" />
-      <Button fx:id="loginButton" layoutX="203.0" layoutY="168.0" mnemonicParsing="false" onAction="#login" text="Login" textFill="WHITESMOKE" AnchorPane.leftAnchor="203.0" AnchorPane.rightAnchor="23.399999999999977">
+      <Button fx:id="loginButton" layoutX="374.0" layoutY="168.0" mnemonicParsing="false" onAction="#login" text="Login" textFill="WHITESMOKE" AnchorPane.rightAnchor="60.39999999999998">
          <cursor>
             <Cursor fx:constant="DEFAULT" />
          </cursor>
       </Button>
       <Label fx:id="incorrectInfoLabel" alignment="CENTER" layoutX="23.0" layoutY="129.0" text="The username or password you entered is incorrect!" textFill="WHITESMOKE" visible="false" />
-      <PasswordField fx:id="passwordTextfield" layoutX="68.0" layoutY="84.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="200.0" promptText="Password" styleClass="textfield" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0" />
-      <Button fx:id="registerButton" layoutX="23.0" layoutY="168.0" mnemonicParsing="false" onAction="#register" text="Register" textFill="WHITESMOKE">
+      <PasswordField fx:id="passwordTextfield" layoutX="68.0" layoutY="84.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#login" prefWidth="200.0" promptText="Password" styleClass="textfield" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0" />
+      <Button fx:id="registerButton" layoutX="60.0" layoutY="168.0" mnemonicParsing="false" onAction="#register" text="Register" textFill="WHITESMOKE">
          <cursor>
             <Cursor fx:constant="DEFAULT" />
          </cursor>
