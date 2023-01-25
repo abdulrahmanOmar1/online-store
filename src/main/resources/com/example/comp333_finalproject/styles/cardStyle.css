@@ -2,7 +2,7 @@
     -fx-background-color: #212121;
     -fx-border-color: #212121;
     -fx-border-width: 1.5;
-    -fx-border-radius: 5;
+    -fx-border-radius: 10px;
 }
 
 .image-view {

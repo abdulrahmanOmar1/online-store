@@ -1,0 +1,25 @@
+.root {
+    -fx-background-color: #212121;
+
+}
+
+.menu_bar {
+    -fx-background-color: #9E9E9E;
+    -fx-border-color: #606060;
+}
+
+.menu_bar .button {
+    -fx-font-family: monospace;
+    -fx-font-size: 18;
+    -fx-font-weight: bold;
+    -fx-background-color: none;
+    -fx-border-color: #212121;
+    -fx-border-radius: 5px;
+    -fx-border-width: 2px;
+}
+
+.menu_bar .label {
+    -fx-font-family: monospace;
+    -fx-font-size: 18;
+    -fx-font-weight: bold;
+}
