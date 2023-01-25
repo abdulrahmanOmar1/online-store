@@ -7,7 +7,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="240.0" prefWidth="528.0" style="-fx-background-color: #212121;" styleClass="root" stylesheets="@loginScene.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.comp333_finalproject.LoginController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="240.0" prefWidth="528.0" style="-fx-background-color: #212121;" styleClass="root" stylesheets="@styles/loginScene.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.comp333_finalproject.LoginController">
    <children>
       <TextField fx:id="usernameTextfield" layoutX="62.0" layoutY="54.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="200.0" promptText="Username" styleClass="textfield" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="50.0" />
       <Button fx:id="loginButton" layoutX="374.0" layoutY="168.0" mnemonicParsing="false" onAction="#login" text="Login" textFill="WHITESMOKE" AnchorPane.rightAnchor="60.39999999999998">

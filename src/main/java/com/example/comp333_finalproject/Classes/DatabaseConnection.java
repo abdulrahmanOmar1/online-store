@@ -1,4 +1,4 @@
-package com.example.comp333_finalproject;
+package com.example.comp333_finalproject.Classes;
 
 import java.sql.*;
 import java.util.Properties;

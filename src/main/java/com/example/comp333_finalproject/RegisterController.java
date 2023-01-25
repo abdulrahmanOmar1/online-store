@@ -1,5 +1,6 @@
 package com.example.comp333_finalproject;
 
+import com.example.comp333_finalproject.Classes.DatabaseConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,7 +12,7 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.Arrays;
 
-public class registerController {
+public class RegisterController {
 
     @FXML
     private Button buttonRegister;
@@ -87,6 +88,7 @@ public class registerController {
             }
         }catch (SQLException | ClassNotFoundException sqlException){
             Alert alert = new Alert(Alert.AlertType.WARNING,"DATABASE ERROR",ButtonType.CLOSE);
+            alert.show();
             return;
         }
 
@@ -100,14 +102,16 @@ public class registerController {
             }
         }catch (SQLException | ClassNotFoundException sqlException){
             Alert alert = new Alert(Alert.AlertType.WARNING,"DATABASE ERROR",ButtonType.CLOSE);
+            alert.show();
         }catch (IOException ioException){
             Alert alert = new Alert(Alert.AlertType.WARNING,"IO ERROR",ButtonType.CLOSE);
+            alert.show();
         }
     }
 
     private void openLoginScreen() throws IOException {
         Stage stage = new Stage();
-        FXMLLoader fxmlLoader = new FXMLLoader(Driver.class.getResource("login.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Driver.class.getResource("loginWindow.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Login");
         stage.setScene(scene);

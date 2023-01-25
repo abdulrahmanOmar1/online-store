@@ -1,24 +1,22 @@
 package com.example.comp333_finalproject;
 
+import com.example.comp333_finalproject.Classes.Customer;
+import com.example.comp333_finalproject.Classes.DatabaseConnection;
+import com.example.comp333_finalproject.Classes.Item;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class MainController {
+public class AdminController {
 
     // FXML FX:ID
     @FXML
@@ -29,34 +27,37 @@ public class MainController {
 
     // CUSTOMER TABLE FXML
     @FXML
-    private TableView<CustomerRecord> customersTable;
+    private TableView<Customer> customersTable;
 
     @FXML
-    private TableColumn<CustomerRecord, String> customer_tCol_building;
+    private TableColumn<Customer, String> customer_tCol_building;
 
     @FXML
-    private TableColumn<CustomerRecord, String> customer_tCol_city;
+    private TableColumn<Customer, String> customer_tCol_city;
 
     @FXML
-    private TableColumn<CustomerRecord, String> customer_tCol_fName;
+    private TableColumn<Customer, String> customer_tCol_fName;
 
     @FXML
-    private TableColumn<CustomerRecord, String> customer_tCol_id;
+    private TableColumn<Customer, String> customer_tCol_id;
 
     @FXML
-    private TableColumn<CustomerRecord, String> customer_tCol_lName;
+    private TableColumn<Customer, String> customer_tCol_lName;
 
     @FXML
-    private TableColumn<CustomerRecord, String> customer_tCol_mobile1;
+    private TableColumn<Customer, String> customer_tCol_mobile1;
 
     @FXML
-    private TableColumn<CustomerRecord, String> customer_tCol_mobile2;
+    private TableColumn<Customer, String> customer_tCol_mobile2;
 
     @FXML
-    private TableColumn<CustomerRecord, String> customer_tCol_street;
+    private TableColumn<Customer, String> customer_tCol_street;
 
     @FXML
     private TextField textfield_searchAddress;
+
+    @FXML
+    private TextField textfield_searchID;
 
     @FXML
     private TextField textfield_searchName;
@@ -92,6 +93,22 @@ public class MainController {
     @FXML
     private TableColumn<Item, Integer> items_tCol_quantity;
 
+    // ADDING ITEMS FXML
+    @FXML
+    private TextField textfield_itemBrand;
+
+    @FXML
+    private TextField textfield_itemColor;
+
+    @FXML
+    private TextField textfield_itemName;
+
+    @FXML
+    private TextField textfield_itemPrice;
+
+    @FXML
+    private TextField textfield_itemQuantity;
+
     @FXML
     private AnchorPane pane_customers;
 
@@ -103,11 +120,13 @@ public class MainController {
         setValueFactoryCustomers();
         setValueFactoryItems();
         try{
-            ObservableList<CustomerRecord> customers = getCustomerData();
+            ObservableList<Customer> customers = getCustomerData();
             textfield_searchName.textProperty().addListener((observable, oldValue, newValue) ->
                     customersTable.setItems(filterListName(customers, newValue)));
             textfield_searchAddress.textProperty().addListener((observable, oldValue, newValue) ->
                     customersTable.setItems(filterListAddress(customers, newValue)));
+            textfield_searchID.textProperty().addListener((observable, oldValue, newValue) ->
+                    customersTable.setItems(filterListID(customers, newValue)));
         }catch (SQLException | ClassNotFoundException e){
             e.printStackTrace();
         }
@@ -123,11 +142,8 @@ public class MainController {
             e.printStackTrace();
         }
 
-
-
-
-
     }
+
 
     // CUSTOMERS TABLE
     private void setValueFactoryCustomers() {
@@ -141,8 +157,8 @@ public class MainController {
         customer_tCol_mobile2.setCellValueFactory(new PropertyValueFactory<>("mobile2"));
     }
 
-    private ObservableList<CustomerRecord> getCustomerData() throws SQLException, ClassNotFoundException {
-        ObservableList<CustomerRecord> data = FXCollections.observableArrayList();
+    private ObservableList<Customer> getCustomerData() throws SQLException, ClassNotFoundException {
+        ObservableList<Customer> data = FXCollections.observableArrayList();
 
         DatabaseConnection databaseConnection = new DatabaseConnection();
         Connection connection = databaseConnection.connectDB();
@@ -151,7 +167,7 @@ public class MainController {
         ResultSet rs = stmt.executeQuery("SELECT * FROM customer");
 
         while (rs.next()) {
-            data.add(new CustomerRecord(rs.getInt(1),rs.getString(2),rs.getString(3),
+            data.add(new Customer(rs.getInt(1),rs.getString(2),rs.getString(3),
                     rs.getString(4),rs.getString(5),rs.getString(6),
                     rs.getString(7),rs.getString(8),rs.getString(9),
                     rs.getString(10)));
@@ -180,7 +196,7 @@ public class MainController {
         ResultSet rs = stmt.executeQuery("SELECT * FROM items");
         while (rs.next()){
             data.add(new Item(rs.getInt(1), rs.getString(2),rs.getString(3),
-                    rs.getInt(4),rs.getFloat(5),rs.getString(6),
+                    rs.getInt(4),rs.getDouble(5),rs.getString(6),
                     rs.getString(7)));
         }
         itemsTable.setItems(data);
@@ -188,27 +204,38 @@ public class MainController {
     }
 
     // SEARCH CUSTOMERS
-    private boolean searchFindName(CustomerRecord customerRecord, String searchText){
-        return (customerRecord.getFirstName().toLowerCase().contains(searchText.toLowerCase())) ||
-                (customerRecord.getLastName().toLowerCase().contains(searchText.toLowerCase()));
+    private boolean searchFindName(Customer customer, String searchText){
+        return (customer.getFirstName().toLowerCase().contains(searchText.toLowerCase())) ||
+                (customer.getLastName().toLowerCase().contains(searchText.toLowerCase()));
     }
-    private ObservableList<CustomerRecord> filterListName(List<CustomerRecord> list, String searchText){
-        List<CustomerRecord> filteredList = new ArrayList<>();
-        for (CustomerRecord customerRecord : list){
-            if(searchFindName(customerRecord, searchText)) filteredList.add(customerRecord);
+    private ObservableList<Customer> filterListName(List<Customer> list, String searchText){
+        List<Customer> filteredList = new ArrayList<>();
+        for (Customer customer : list){
+            if(searchFindName(customer, searchText)) filteredList.add(customer);
         }
         return FXCollections.observableList(filteredList);
     }
 
-    private boolean searchFindAddress(CustomerRecord customerRecord, String searchText){
-        return (customerRecord.getCity().toLowerCase().contains(searchText.toLowerCase())) ||
-               (customerRecord.getStreet().toLowerCase().contains(searchText.toLowerCase()) ||
-               (customerRecord.getBuilding().toLowerCase().contains(searchText.toLowerCase())));
+    private boolean searchFindID(Customer customer, String searchText){
+        return (String.valueOf(customer.getID()).contains(searchText.toLowerCase()));
     }
-    private ObservableList<CustomerRecord> filterListAddress(ObservableList<CustomerRecord> list, String searchText) {
-        List<CustomerRecord> filteredList = new ArrayList<>();
-        for (CustomerRecord customerRecord : list){
-            if(searchFindAddress(customerRecord, searchText)) filteredList.add(customerRecord);
+    private ObservableList<Customer> filterListID(ObservableList<Customer> list, String searchText) {
+        List<Customer> filteredList = new ArrayList<>();
+        for (Customer customer : list){
+            if(searchFindID(customer, searchText)) filteredList.add(customer);
+        }
+        return FXCollections.observableList(filteredList);
+    }
+
+    private boolean searchFindAddress(Customer customer, String searchText){
+        return (customer.getCity().toLowerCase().contains(searchText.toLowerCase())) ||
+               (customer.getStreet().toLowerCase().contains(searchText.toLowerCase()) ||
+               (customer.getBuilding().toLowerCase().contains(searchText.toLowerCase())));
+    }
+    private ObservableList<Customer> filterListAddress(ObservableList<Customer> list, String searchText) {
+        List<Customer> filteredList = new ArrayList<>();
+        for (Customer customer : list){
+            if(searchFindAddress(customer, searchText)) filteredList.add(customer);
         }
         return FXCollections.observableList(filteredList);
     }
@@ -265,6 +292,75 @@ public class MainController {
         pane_customers.setVisible(false);
     }
 
+    @FXML
+    void addImageToItem(ActionEvent event) {
+
+    }
+
+    @FXML
+    void addItem(ActionEvent event) {
+        String itemName = textfield_itemName.getText();
+        String itemBrand = textfield_itemBrand.getText();
+        String itemColor = textfield_itemColor.getText();
+        int itemQuantity = 0;
+        double itemPrice = 0.0;
+        try{
+            itemQuantity = Integer.parseInt(textfield_itemQuantity.getText());
+        }catch (NumberFormatException e){
+            textfield_itemQuantity.setText("");
+            Alert alert = new Alert(Alert.AlertType.WARNING,"QUANTITY SHOULD BE AN INTEGER",ButtonType.CLOSE);
+            alert.show();
+            return;
+        }
+        try {
+            itemPrice = Double.parseDouble(textfield_itemPrice.getText());
+        }catch (NumberFormatException e){
+            textfield_itemPrice.setText("");
+            Alert alert = new Alert(Alert.AlertType.WARNING,"PRICE SHOULD BE A DOUBLE",ButtonType.CLOSE);
+            alert.show();
+            return;
+        }
+        for (String checkString : Arrays.asList(itemName,itemBrand,itemColor)){
+            if (checkString.isBlank()){
+                Alert alert = new Alert(Alert.AlertType.WARNING,"YOU CAN'T HAVE AN EMPTY FIELD",ButtonType.CLOSE);
+                alert.show();
+                return;
+            }
+        }
+        try {
+            if (AddItemToDatabase(itemName, itemBrand, itemQuantity, itemPrice, itemColor)){
+                getItemData();
+            }
+        }catch (SQLException | ClassNotFoundException e){
+            Alert alert = new Alert(Alert.AlertType.WARNING,"DATABASE ERROR",ButtonType.CLOSE);
+            alert.show();
+        }
+
+    }
+
+
+    private boolean AddItemToDatabase(String itemName, String itemBrand, int itemQuantity, double itemPrice, String itemColor) throws SQLException, ClassNotFoundException {
+        DatabaseConnection connectNow = new DatabaseConnection();
+        Connection connection = connectNow.connectDB();
+        System.out.println("connected to database");
+        PreparedStatement ps = connection.prepareStatement("INSERT INTO items (IName, Brand, Quantity, Price, Color, ImagePath) " +
+                "VALUES (?, ?, ?, ?, ?, ?)");
+        ps.setString(1,itemName);
+        ps.setString(2,itemBrand);
+        ps.setInt(3,itemQuantity);
+        ps.setDouble(4,itemPrice);
+        ps.setString(5,itemColor);
+        ps.setString(6,"ANYTHING");
+        try {
+            ps.execute();
+        }catch (Exception e){
+            return false;
+        }
+        connection.close();
+        return true;
+
+
+    }
 
 
 }

@@ -1,6 +1,6 @@
-package com.example.comp333_finalproject;
+package com.example.comp333_finalproject.Classes;
 
-public class CustomerRecord {
+public class Customer {
     private int ID;
     private String firstName;
     private String lastName;
@@ -12,7 +12,7 @@ public class CustomerRecord {
     private String _username;
     private String _password;
 
-    public CustomerRecord(int ID, String firstName, String lastName, String city, String street, String building, String mobile1, String mobile2, String _username, String _password) {
+    public Customer(int ID, String firstName, String lastName, String city, String street, String building, String mobile1, String mobile2, String _username, String _password) {
         this.ID = ID;
         this.firstName = firstName;
         this.lastName = lastName;

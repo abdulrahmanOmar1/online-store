@@ -1,15 +1,15 @@
-package com.example.comp333_finalproject;
+package com.example.comp333_finalproject.Classes;
 
 public class Item {
     private int id;
     private String name;
     private String brand;
     private int quantity;
-    private float price;
+    private double price;
     private String color;
     private String imagePath;
 
-    public Item(int id, String name, String brand, int quantity, float price, String color, String imagePath) {
+    public Item(int id, String name, String brand, int quantity, double price, String color, String imagePath) {
         this.id = id;
         this.name = name;
         this.brand = brand;
@@ -52,11 +52,11 @@ public class Item {
         this.quantity = quantity;
     }
 
-    public float getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

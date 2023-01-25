@@ -1,5 +1,6 @@
 package com.example.comp333_finalproject;
 
+import com.example.comp333_finalproject.Classes.DatabaseConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -58,7 +59,7 @@ public class LoginController {
     @FXML
     void register(ActionEvent event) throws IOException {
         Stage stage = new Stage();
-        FXMLLoader fxmlLoader = new FXMLLoader(Driver.class.getResource("register.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Driver.class.getResource("registerationWindow.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Registration");
         stage.setScene(scene);
@@ -70,7 +71,7 @@ public class LoginController {
 
     private void openAdminStage() throws IOException {
         Stage stage = new Stage();
-        FXMLLoader fxmlLoader = new FXMLLoader(Driver.class.getResource("adminPanel.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Driver.class.getResource("adminPanelWindow.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("COMP333 Project");
         stage.setScene(scene);
