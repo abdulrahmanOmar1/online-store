@@ -1,6 +1,8 @@
-package com.example.comp333_finalproject;
+package com.example.comp333_finalproject.Controllers;
 
+import com.example.comp333_finalproject.Classes.Customer;
 import com.example.comp333_finalproject.Classes.DatabaseConnection;
+import com.example.comp333_finalproject.Main.Driver;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -34,13 +36,13 @@ public class LoginController {
         try {
             if (isAdmin(username, password))
                 openAdminStage();
-            else if (userExists(username, password))
-                openAdminStage();
-            else {
-                incorrectInfoLabel.setText("Username or password is incorrect");
-                incorrectInfoLabel.setVisible(true);
-                usernameTextfield.setText("");
-                passwordTextfield.setText("");
+            else if (userExists(username, password)) {
+                Customer currentCustomer = getCustomer(username);
+                if (currentCustomer == null)
+                    wrongLoginInfo();
+                openUserStage(currentCustomer);
+            }else {
+                wrongLoginInfo();
             }
         }catch (ClassNotFoundException | IOException | SQLException exception){
             incorrectInfoLabel.setText("HARD ERROR");
@@ -52,14 +54,10 @@ public class LoginController {
 
     }
 
-    private boolean isAdmin(String username, String password) {
-        return (username.equals("chrisROOT23") && password.equals("220ROOT$"));
-    }
-
     @FXML
     void register(ActionEvent event) throws IOException {
         Stage stage = new Stage();
-        FXMLLoader fxmlLoader = new FXMLLoader(Driver.class.getResource("registerationWindow.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(com.example.comp333_finalproject.Main.Driver.class.getResource("registerationWindow.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Registration");
         stage.setScene(scene);
@@ -67,6 +65,38 @@ public class LoginController {
         stage.show();
         Stage thisStage = (Stage) loginButton.getScene().getWindow();
         thisStage.close();
+    }
+
+    private void wrongLoginInfo() {
+        incorrectInfoLabel.setText("Username or password is incorrect");
+        incorrectInfoLabel.setVisible(true);
+        usernameTextfield.setText("");
+        passwordTextfield.setText("");
+    }
+
+    private Customer getCustomer(String username) throws SQLException, ClassNotFoundException {
+        for (Customer customer: com.example.comp333_finalproject.Main.Driver.getCustomerList()){
+            if (customer.get_username().equals(username))
+                return customer;
+        }
+        return null;
+    }
+
+    private void openUserStage(Customer currentCustomer) throws IOException {
+        UserPanelController.setCustomer(currentCustomer);
+        Stage stage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader(com.example.comp333_finalproject.Main.Driver.class.getResource("userMainWindow.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setTitle("Zughayer");
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
+        Stage thisStage = (Stage) loginButton.getScene().getWindow();
+        thisStage.close();
+    }
+
+    private boolean isAdmin(String username, String password) {
+        return (username.equals("admin") && password.equals("admin"));
     }
 
     private void openAdminStage() throws IOException {

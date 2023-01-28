@@ -1,5 +1,7 @@
 package com.example.comp333_finalproject.Classes;
 
+import java.util.ArrayList;
+
 public class Customer {
     private int ID;
     private String firstName;
@@ -11,6 +13,7 @@ public class Customer {
     private String mobile2;
     private String _username;
     private String _password;
+    private ArrayList<Item> order = new ArrayList<>();
 
     public Customer(int ID, String firstName, String lastName, String city, String street, String building, String mobile1, String mobile2, String _username, String _password) {
         this.ID = ID;
@@ -48,6 +51,14 @@ public class Customer {
 
     public void setID(int ID) {
         this.ID = ID;
+    }
+
+    public ArrayList<Item> getOrder() {
+        return order;
+    }
+
+    public void setOrder(ArrayList<Item> order) {
+        this.order = order;
     }
 
     public String getFirstName() {

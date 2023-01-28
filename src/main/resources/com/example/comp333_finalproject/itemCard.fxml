@@ -5,23 +5,27 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
-
-<VBox fx:id="box" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="373.0" prefWidth="215.0" spacing="5.0" styleClass="root" stylesheets="@styles/cardStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.comp333_finalproject.CardController">
+<VBox fx:id="box" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="373.0" prefWidth="215.0" spacing="5.0" styleClass="root" stylesheets="@styles/cardStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.comp333_finalproject.Controllers.CardController">
    <children>
-      <ImageView fx:id="image" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
-         <image>
-            <Image url="@../../../images/red_tshirt.jpg" />
-         </image>
-      </ImageView>
-      <VBox prefHeight="130.0" prefWidth="202.0" spacing="5.0">
+      <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="180.0" prefWidth="202.4">
+         <center>
+            <ImageView fx:id="image" fitHeight="200.0" fitWidth="200.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../images/no-image.png" />
+               </image>
+            </ImageView>
+         </center>
+      </BorderPane>
+      <VBox prefHeight="242.0" prefWidth="202.0" spacing="5.0">
          <children>
-            <Label fx:id="itemName" prefHeight="50.0" prefWidth="198.0" styleClass="label-name" text="Basic T-Shirt" wrapText="true" />
+            <Label fx:id="itemName" prefHeight="80.0" prefWidth="193.0" styleClass="label-name" text="Men Basic T-Shirt" wrapText="true" />
             <Label fx:id="itemBrand" styleClass="label-brand" text="BASICS" />
             <Label fx:id="itemPrice" styleClass="label-price" text="49.9$" />
-            <Circle fx:id="itemColor" fill="#ff1f1f" radius="15.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle-color" />
          </children>
          <VBox.margin>
             <Insets />
@@ -30,7 +34,12 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </VBox>
-      <Button fx:id="button_item" mnemonicParsing="false" onAction="#addItem" text="Add To Order" />
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+         <children>
+            <Circle fx:id="itemColor" fill="#ff1f1f" radius="15.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle-color" />
+            <Button fx:id="button_item" mnemonicParsing="false" onAction="#addItem" text="Add To Order" />
+         </children>
+      </HBox>
    </children>
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

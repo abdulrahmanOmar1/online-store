@@ -1,6 +1,7 @@
 .root {
     -fx-background-color: #212121;
-
+    -fx-border-color: #9E9E9E;
+    -fx-border-width: 2;
 }
 
 .menu_bar {
@@ -18,8 +19,45 @@
     -fx-border-width: 2px;
 }
 
+.menu_bar .button:pressed {
+    -fx-border-radius: 5px;
+    -fx-background-color: #212121;
+    -fx-text-fill: #9E9E9E;
+}
+
 .menu_bar .label {
     -fx-font-family: monospace;
     -fx-font-size: 18;
     -fx-font-weight: bold;
+}
+
+.browser_pane {
+    -fx-background-color: #212121;
+    -fx-border-color: #606060;
+    -fx-border-width: 2px;
+}
+
+.vbox {
+    -fx-background-color: #212121;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: #212121;
+}
+
+.side-button {
+    -fx-font-family: monospace;
+    -fx-font-size: 18;
+    -fx-font-weight: bold;
+    -fx-background-color: none;
+    -fx-border-color: #9E9E9E;
+    -fx-text-fill: #9E9E9E;
+    -fx-border-radius: 5px;
+    -fx-border-width: 2px;
+}
+
+.side-button:pressed {
+    -fx-border-radius: 5px;
+    -fx-background-color: #9E9E9E;
+    -fx-text-fill: #212121;
 }

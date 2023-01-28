@@ -1,8 +1,9 @@
-package com.example.comp333_finalproject;
+package com.example.comp333_finalproject.Controllers;
 
 import com.example.comp333_finalproject.Classes.Customer;
 import com.example.comp333_finalproject.Classes.DatabaseConnection;
 import com.example.comp333_finalproject.Classes.Item;
+import com.example.comp333_finalproject.Main.Driver;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,7 +11,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
+import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -120,7 +124,7 @@ public class AdminController {
         setValueFactoryCustomers();
         setValueFactoryItems();
         try{
-            ObservableList<Customer> customers = getCustomerData();
+            ObservableList<Customer> customers = setCustomerTable();
             textfield_searchName.textProperty().addListener((observable, oldValue, newValue) ->
                     customersTable.setItems(filterListName(customers, newValue)));
             textfield_searchAddress.textProperty().addListener((observable, oldValue, newValue) ->
@@ -131,7 +135,7 @@ public class AdminController {
             e.printStackTrace();
         }
         try{
-            ObservableList<Item> items = getItemData();
+            ObservableList<Item> items = setItemTable();
             item_textfield_searchName.textProperty().addListener((observable, oldValue, newValue) ->
                     itemsTable.setItems(filterListItemName(items, newValue)));
             item_textfield_searchBrand.textProperty().addListener((observable, oldValue, newValue) ->
@@ -157,25 +161,10 @@ public class AdminController {
         customer_tCol_mobile2.setCellValueFactory(new PropertyValueFactory<>("mobile2"));
     }
 
-    private ObservableList<Customer> getCustomerData() throws SQLException, ClassNotFoundException {
-        ObservableList<Customer> data = FXCollections.observableArrayList();
-
-        DatabaseConnection databaseConnection = new DatabaseConnection();
-        Connection connection = databaseConnection.connectDB();
-
-        Statement stmt = connection.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM customer");
-
-        while (rs.next()) {
-            data.add(new Customer(rs.getInt(1),rs.getString(2),rs.getString(3),
-                    rs.getString(4),rs.getString(5),rs.getString(6),
-                    rs.getString(7),rs.getString(8),rs.getString(9),
-                    rs.getString(10)));
-        }
+    private ObservableList<Customer> setCustomerTable() throws SQLException, ClassNotFoundException {
+        ObservableList<Customer> data = FXCollections.observableArrayList(com.example.comp333_finalproject.Main.Driver.getCustomerList());
         customersTable.setItems(data);
         return data;
-
-
     }
 
     // ITEMS TABLE
@@ -188,17 +177,8 @@ public class AdminController {
         items_tCol_color.setCellValueFactory(new PropertyValueFactory<>("color"));
     }
 
-    private ObservableList<Item> getItemData() throws SQLException, ClassNotFoundException {
-        ObservableList<Item> data = FXCollections.observableArrayList();
-        DatabaseConnection databaseConnection = new DatabaseConnection();
-        Connection connection = databaseConnection.connectDB();
-        Statement stmt = connection.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM items");
-        while (rs.next()){
-            data.add(new Item(rs.getInt(1), rs.getString(2),rs.getString(3),
-                    rs.getInt(4),rs.getDouble(5),rs.getString(6),
-                    rs.getString(7)));
-        }
+    private ObservableList<Item> setItemTable() throws SQLException, ClassNotFoundException {
+        ObservableList<Item> data = FXCollections.observableArrayList(Driver.getItemList()) ;
         itemsTable.setItems(data);
         return data;
     }
@@ -292,9 +272,12 @@ public class AdminController {
         pane_customers.setVisible(false);
     }
 
-    @FXML
-    void addImageToItem(ActionEvent event) {
-
+    String addImageToItem() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose Image");
+        Stage thisStage = (Stage) button_items.getScene().getWindow();
+        File chosenFile = fileChooser.showOpenDialog(thisStage);
+        return chosenFile.getAbsolutePath();
     }
 
     @FXML
@@ -302,6 +285,7 @@ public class AdminController {
         String itemName = textfield_itemName.getText();
         String itemBrand = textfield_itemBrand.getText();
         String itemColor = textfield_itemColor.getText();
+        String imagePath =  "file:" + addImageToItem();
         int itemQuantity = 0;
         double itemPrice = 0.0;
         try{
@@ -328,8 +312,8 @@ public class AdminController {
             }
         }
         try {
-            if (AddItemToDatabase(itemName, itemBrand, itemQuantity, itemPrice, itemColor)){
-                getItemData();
+            if (AddItemToDatabase(itemName, itemBrand, itemQuantity, itemPrice, itemColor, imagePath)){
+                setItemTable();
             }
         }catch (SQLException | ClassNotFoundException e){
             Alert alert = new Alert(Alert.AlertType.WARNING,"DATABASE ERROR",ButtonType.CLOSE);
@@ -339,10 +323,10 @@ public class AdminController {
     }
 
 
-    private boolean AddItemToDatabase(String itemName, String itemBrand, int itemQuantity, double itemPrice, String itemColor) throws SQLException, ClassNotFoundException {
+    private boolean AddItemToDatabase(String itemName, String itemBrand, int itemQuantity, double itemPrice, String itemColor, String imagePath) throws SQLException, ClassNotFoundException {
         DatabaseConnection connectNow = new DatabaseConnection();
         Connection connection = connectNow.connectDB();
-        System.out.println("connected to database");
+        System.out.println("DB CONNECTION SUCCESSFUL");
         PreparedStatement ps = connection.prepareStatement("INSERT INTO items (IName, Brand, Quantity, Price, Color, ImagePath) " +
                 "VALUES (?, ?, ?, ?, ?, ?)");
         ps.setString(1,itemName);

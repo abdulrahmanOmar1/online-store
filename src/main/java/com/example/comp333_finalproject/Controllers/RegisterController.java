@@ -1,6 +1,7 @@
-package com.example.comp333_finalproject;
+package com.example.comp333_finalproject.Controllers;
 
 import com.example.comp333_finalproject.Classes.DatabaseConnection;
+import com.example.comp333_finalproject.Main.Driver;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -123,7 +124,7 @@ public class RegisterController {
     private boolean registerUserToDatabase(String firstName, String lastName, String city, String street, String building, String mobile1, String mobile2, String username, String password) throws SQLException, ClassNotFoundException {
         DatabaseConnection connectNow = new DatabaseConnection();
         Connection connection = connectNow.connectDB();
-        System.out.println("connected to database");
+        System.out.println("DB CONNECTION SUCCESSFUL");
         PreparedStatement ps = connection.prepareStatement("INSERT INTO customer (customer_first_name, " +
                 "customer_last_name, customer_city, customer_street, customer_buidling, customer_mobile1, " +
                 "customer_mobile2, customer_username, customer_password) VALUES (?,?,?,?,?,?,?,?,?)");
