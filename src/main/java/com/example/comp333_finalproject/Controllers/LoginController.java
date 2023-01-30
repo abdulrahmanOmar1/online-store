@@ -2,7 +2,7 @@ package com.example.comp333_finalproject.Controllers;
 
 import com.example.comp333_finalproject.Classes.Customer;
 import com.example.comp333_finalproject.Classes.DatabaseConnection;
-import com.example.comp333_finalproject.Main.Driver;
+import com.example.comp333_finalproject.Driver;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -57,7 +57,7 @@ public class LoginController {
     @FXML
     void register(ActionEvent event) throws IOException {
         Stage stage = new Stage();
-        FXMLLoader fxmlLoader = new FXMLLoader(com.example.comp333_finalproject.Main.Driver.class.getResource("registerationWindow.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Driver.class.getResource("registerationWindow.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Registration");
         stage.setScene(scene);
@@ -75,7 +75,7 @@ public class LoginController {
     }
 
     private Customer getCustomer(String username) throws SQLException, ClassNotFoundException {
-        for (Customer customer: com.example.comp333_finalproject.Main.Driver.getCustomerList()){
+        for (Customer customer: Driver.getCustomerList()){
             if (customer.get_username().equals(username))
                 return customer;
         }
@@ -85,7 +85,7 @@ public class LoginController {
     private void openUserStage(Customer currentCustomer) throws IOException {
         UserPanelController.setCustomer(currentCustomer);
         Stage stage = new Stage();
-        FXMLLoader fxmlLoader = new FXMLLoader(com.example.comp333_finalproject.Main.Driver.class.getResource("userMainWindow.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Driver.class.getResource("userMainWindow.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Zughayer");
         stage.setScene(scene);

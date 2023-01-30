@@ -16,8 +16,8 @@ module com.example.comp333_finalproject {
     exports com.example.comp333_finalproject;
     exports com.example.comp333_finalproject.Classes;
     opens com.example.comp333_finalproject.Classes to javafx.fxml;
-    exports com.example.comp333_finalproject.Main;
-    opens com.example.comp333_finalproject.Main to javafx.fxml;
     exports com.example.comp333_finalproject.Controllers;
     opens com.example.comp333_finalproject.Controllers to javafx.fxml;
+    exports com.example.comp333_finalproject.TableClasses;
+    opens com.example.comp333_finalproject.TableClasses to javafx.fxml;
 }

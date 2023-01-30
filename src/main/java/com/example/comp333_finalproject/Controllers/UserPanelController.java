@@ -1,8 +1,8 @@
 package com.example.comp333_finalproject.Controllers;
 
 import com.example.comp333_finalproject.Classes.*;
-import com.example.comp333_finalproject.Main.Driver;
-import com.example.comp333_finalproject.Main.MyListener;
+import com.example.comp333_finalproject.Driver;
+import com.example.comp333_finalproject.Classes.MyListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -53,7 +53,7 @@ public class UserPanelController {
     @FXML
     private void initialize() throws SQLException, ClassNotFoundException {
         label_userFullName.setText(currentUser.getFirstName() + " " + currentUser.getLastName());
-        items.addAll(com.example.comp333_finalproject.Main.Driver.getItemList());
+        items.addAll(Driver.getItemList());
         myListener = new MyListener() {
             @Override
             public void onClickListener(Item item) {
@@ -142,13 +142,24 @@ public class UserPanelController {
             DatabaseConnection connectNow = new DatabaseConnection();
             Connection insertConnection = connectNow.connectDB();
             System.out.println("DB CONNECTION SUCCESSFUL");
-            PreparedStatement ps = insertConnection.prepareStatement("INSERT INTO item_order (itemID, orderID) " +
+            PreparedStatement insertStatement = insertConnection.prepareStatement("INSERT INTO item_order (itemID, orderID) " +
                     "VALUES (?, ?)");
-            ps.setInt(1, item.getId());
-            ps.setInt(2, currentOrder.getOrderID());
-            ps.execute();
+            insertStatement.setInt(1, item.getId());
+            insertStatement.setInt(2, currentOrder.getOrderID());
+            insertStatement.execute();
             insertConnection.close();
-            System.out.println(item.getId() + " : " + item.getColor() + " " + item.getName());
+
+            Connection updateConnection = connectNow.connectDB();
+            System.out.println("DB CONNECTION SUCCESSFUL");
+            PreparedStatement updateStatement = updateConnection.prepareStatement("UPDATE ordert SET ordert.totalPrice = ? WHERE ordert.orderID = ?");
+            double newPrice = currentOrder.getOrderTotalPrice() + item.getPrice();
+            currentOrder.setOrderTotalPrice(newPrice);
+            updateStatement.setDouble(1,newPrice);
+            updateStatement.setInt(2,currentOrder.getOrderID());
+            updateStatement.execute();
+            updateConnection.close();
+
+            System.out.println("ADDED" + item.getId() + " : " + item.getColor() + " " + item.getName());
         }catch (SQLIntegrityConstraintViolationException duplicate){
             Alert alert = new Alert(Alert.AlertType.WARNING,"ITEM ALREADY IN ORDER", ButtonType.CLOSE);
             alert.show();

@@ -1,7 +1,7 @@
 package com.example.comp333_finalproject.Controllers;
 
 import com.example.comp333_finalproject.Classes.DatabaseConnection;
-import com.example.comp333_finalproject.Main.Driver;
+import com.example.comp333_finalproject.Driver;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

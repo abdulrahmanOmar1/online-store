@@ -1,4 +1,4 @@
-package com.example.comp333_finalproject.Main;
+package com.example.comp333_finalproject;
 
 import com.example.comp333_finalproject.Classes.Customer;
 import com.example.comp333_finalproject.Classes.DatabaseConnection;

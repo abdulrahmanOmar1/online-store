@@ -17,6 +17,7 @@
     -fx-border-color: #212121;
     -fx-border-radius: 5px;
     -fx-border-width: 2px;
+
 }
 
 .menu_bar .button:pressed {

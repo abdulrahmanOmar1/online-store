@@ -2,7 +2,8 @@ package com.example.comp333_finalproject.Controllers;
 
 import com.example.comp333_finalproject.Classes.Customer;
 import com.example.comp333_finalproject.Classes.Item;
-import com.example.comp333_finalproject.Main.MyListener;
+import com.example.comp333_finalproject.Classes.MyListener;
+import com.example.comp333_finalproject.Driver;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -13,7 +14,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URL;
 
 public class CardController {
 
@@ -43,16 +46,18 @@ public class CardController {
 
     private MyListener myListener;
 
-    private Customer currentSession;
-
     public void setData(Item item, MyListener myListener) throws IOException {
         this.thisItem = item;
         this.myListener = myListener;
         try {
-            Image ioImage = new Image(item.getImagePath());
+            FileInputStream inputStream = new FileInputStream(item.getImagePath());
+            Image ioImage = new Image(inputStream);
             image.setImage(ioImage);
             image.setCache(true);
-        }catch (IllegalArgumentException ignored){}
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
 
         itemName.setText(item.getName());
         itemBrand.setText(item.getBrand());

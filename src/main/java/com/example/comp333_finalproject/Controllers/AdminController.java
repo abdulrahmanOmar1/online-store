@@ -3,7 +3,8 @@ package com.example.comp333_finalproject.Controllers;
 import com.example.comp333_finalproject.Classes.Customer;
 import com.example.comp333_finalproject.Classes.DatabaseConnection;
 import com.example.comp333_finalproject.Classes.Item;
-import com.example.comp333_finalproject.Main.Driver;
+import com.example.comp333_finalproject.Driver;
+import com.example.comp333_finalproject.TableClasses.CustomerOrder;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,12 +23,17 @@ import java.util.List;
 
 public class AdminController {
 
-    // FXML FX:ID
+    // FXML FX:IDS
+
+    // SIDE MENU BUTTONS FXML
     @FXML
     private Button button_customers;
 
     @FXML
     private Button button_items;
+
+    @FXML
+    private Button button_orders;
 
     // CUSTOMER TABLE FXML
     @FXML
@@ -97,6 +103,27 @@ public class AdminController {
     @FXML
     private TableColumn<Item, Integer> items_tCol_quantity;
 
+    @FXML
+    private TableColumn<CustomerOrder, Integer> order_tCol_customerID;
+
+    @FXML
+    private TableColumn<CustomerOrder, Integer> order_tCol_orderID;
+
+    @FXML
+    private TableColumn<CustomerOrder, String> order_tCol_orderName;
+
+    @FXML
+    private TableColumn<CustomerOrder, Double> order_tCol_orderPrice;
+
+    @FXML
+    private TableView<CustomerOrder> ordersTable;
+
+    @FXML
+    private TextField order_textField_searchCustomer;
+
+    @FXML
+    private TextField order_textField_searchOrder;
+
     // ADDING ITEMS FXML
     @FXML
     private TextField textfield_itemBrand;
@@ -113,6 +140,7 @@ public class AdminController {
     @FXML
     private TextField textfield_itemQuantity;
 
+    // PANES FXML
     @FXML
     private AnchorPane pane_customers;
 
@@ -120,20 +148,24 @@ public class AdminController {
     private AnchorPane pane_items;
 
     @FXML
+    private AnchorPane pane_orders;
+
+
+    @FXML
     public void initialize() {
+
         setValueFactoryCustomers();
+        setCustomerSearchListeners();
+
         setValueFactoryItems();
-        try{
-            ObservableList<Customer> customers = setCustomerTable();
-            textfield_searchName.textProperty().addListener((observable, oldValue, newValue) ->
-                    customersTable.setItems(filterListName(customers, newValue)));
-            textfield_searchAddress.textProperty().addListener((observable, oldValue, newValue) ->
-                    customersTable.setItems(filterListAddress(customers, newValue)));
-            textfield_searchID.textProperty().addListener((observable, oldValue, newValue) ->
-                    customersTable.setItems(filterListID(customers, newValue)));
-        }catch (SQLException | ClassNotFoundException e){
-            e.printStackTrace();
-        }
+        setItemSearchListeners();
+
+        setValueFactoryCustomerOrders();
+        setCustomerOrdersSearchListeners();
+    }
+
+    // SETTING SEARCH LISTENERS
+    private void setItemSearchListeners() {
         try{
             ObservableList<Item> items = setItemTable();
             item_textfield_searchName.textProperty().addListener((observable, oldValue, newValue) ->
@@ -145,9 +177,80 @@ public class AdminController {
         }catch (SQLException | ClassNotFoundException e){
             e.printStackTrace();
         }
-
     }
 
+    private void setCustomerSearchListeners() {
+        try{
+            ObservableList<Customer> customers = setCustomerTable();
+            textfield_searchName.textProperty().addListener((observable, oldValue, newValue) ->
+                    customersTable.setItems(filterListName(customers, newValue)));
+            textfield_searchAddress.textProperty().addListener((observable, oldValue, newValue) ->
+                    customersTable.setItems(filterListAddress(customers, newValue)));
+            textfield_searchID.textProperty().addListener((observable, oldValue, newValue) ->
+                    customersTable.setItems(filterListID(customers, newValue)));
+        }catch (SQLException | ClassNotFoundException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void setCustomerOrdersSearchListeners(){
+        try{
+            ObservableList<CustomerOrder> customerOrders = setOrdersTable();
+            order_textField_searchCustomer.textProperty().addListener((observable, oldValue, newValue) ->
+                    ordersTable.setItems(filterListOrderCustomerID(customerOrders, newValue)));
+            order_textField_searchOrder.textProperty().addListener((observable, oldValue, newValue) ->
+                    ordersTable.setItems(filterListOrderID(customerOrders, newValue)));
+        } catch (SQLException | ClassNotFoundException sqlException) {
+            sqlException.printStackTrace();
+        }
+    }
+
+    // SEARCH ORDERS
+    private ObservableList<CustomerOrder> filterListOrderID(ObservableList<CustomerOrder> list, String searchText) {
+        List<CustomerOrder> filteredList = new ArrayList<>();
+        for (CustomerOrder customer : list){
+            if(searchFindOrderID(customer, searchText)) filteredList.add(customer);
+        }
+        return FXCollections.observableList(filteredList);
+    }
+
+    private boolean searchFindOrderID(CustomerOrder customerOrder, String searchText) {
+        return (String.valueOf(customerOrder.getOrderID()).contains(searchText.toLowerCase()));
+    }
+
+    private ObservableList<CustomerOrder> filterListOrderCustomerID(ObservableList<CustomerOrder> list, String searchText) {
+        List<CustomerOrder> filteredList = new ArrayList<>();
+        for (CustomerOrder customerOrder : list){
+            if(searchFindOrderCustomerID(customerOrder, searchText)) filteredList.add(customerOrder);
+        }
+        return FXCollections.observableList(filteredList);
+    }
+
+    private boolean searchFindOrderCustomerID(CustomerOrder customerOrder, String searchText) {
+        return (String.valueOf(customerOrder.getCustomerID()).contains(searchText.toLowerCase()));
+    }
+
+    // ORDERS TABLE
+    private void setValueFactoryCustomerOrders() {
+        order_tCol_customerID.setCellValueFactory(new PropertyValueFactory<>("customerID"));
+        order_tCol_orderID.setCellValueFactory(new PropertyValueFactory<>("orderID"));
+        order_tCol_orderPrice.setCellValueFactory(new PropertyValueFactory<>("orderPrice"));
+        order_tCol_orderName.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+    }
+
+    private ObservableList<CustomerOrder> setOrdersTable() throws SQLException, ClassNotFoundException{
+        ObservableList<CustomerOrder> data = FXCollections.observableArrayList();
+        DatabaseConnection databaseConnection = new DatabaseConnection();
+        Connection connection = databaseConnection.connectDB();
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT ordert.orderID, ordert.totalPrice, customer.customer_id, customer.customer_first_name, customer.customer_last_name FROM customer INNER JOIN ordert \n" +
+                "WHERE ordert.customerID = customer.customer_id;");
+        while (resultSet.next()){
+            data.add(new CustomerOrder(resultSet.getInt(1),resultSet.getInt(3), resultSet.getDouble(2), resultSet.getString(4), resultSet.getString(5)));
+        }
+        ordersTable.setItems(data);
+        return data;
+    }
 
     // CUSTOMERS TABLE
     private void setValueFactoryCustomers() {
@@ -162,7 +265,7 @@ public class AdminController {
     }
 
     private ObservableList<Customer> setCustomerTable() throws SQLException, ClassNotFoundException {
-        ObservableList<Customer> data = FXCollections.observableArrayList(com.example.comp333_finalproject.Main.Driver.getCustomerList());
+        ObservableList<Customer> data = FXCollections.observableArrayList(Driver.getCustomerList());
         customersTable.setItems(data);
         return data;
     }
@@ -254,13 +357,24 @@ public class AdminController {
         return FXCollections.observableList(filteredList);
     }
 
-
     // SWITCHING TABS
     @FXML
     void openCustomersMenu(ActionEvent event) {
         pane_customers.setVisible(true);
         button_customers.setStyle("-fx-border-color: #88B4EF; -fx-border-width: 2; -fx-text-fill: #88B4EF");
         button_items.setStyle("");
+        button_orders.setStyle("");
+        pane_items.setVisible(false);
+        pane_orders.setVisible(false);
+    }
+
+    @FXML
+    void openOrdersMenu(ActionEvent event){
+        pane_orders.setVisible(true);
+        button_orders.setStyle("-fx-border-color: #88B4EF; -fx-border-width: 2; -fx-text-fill: #88B4EF");
+        button_customers.setStyle("");
+        button_items.setStyle("");
+        pane_customers.setVisible(false);
         pane_items.setVisible(false);
     }
 
@@ -269,9 +383,12 @@ public class AdminController {
         pane_items.setVisible(true);
         button_items.setStyle("-fx-border-color: #88B4EF; -fx-border-width: 2; -fx-text-fill: #88B4EF");
         button_customers.setStyle("");
+        button_orders.setStyle("");
+        pane_orders.setVisible(false);
         pane_customers.setVisible(false);
     }
 
+    // ADDING AN ITEM
     String addImageToItem() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose Image");
@@ -322,7 +439,6 @@ public class AdminController {
 
     }
 
-
     private boolean AddItemToDatabase(String itemName, String itemBrand, int itemQuantity, double itemPrice, String itemColor, String imagePath) throws SQLException, ClassNotFoundException {
         DatabaseConnection connectNow = new DatabaseConnection();
         Connection connection = connectNow.connectDB();
@@ -345,6 +461,8 @@ public class AdminController {
 
 
     }
+
+    // ORDERS TABLE
 
 
 }
