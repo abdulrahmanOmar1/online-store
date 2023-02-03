@@ -5,22 +5,38 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="240.0" prefWidth="528.0" style="-fx-background-color: #212121;" styleClass="root" stylesheets="@styles/loginStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.comp333_finalproject.Controllers.LoginController">
    <children>
       <TextField fx:id="usernameTextfield" layoutX="62.0" layoutY="54.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="200.0" promptText="Username" styleClass="textfield" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="50.0" />
-      <Button fx:id="loginButton" layoutX="374.0" layoutY="168.0" mnemonicParsing="false" onAction="#login" text="Login" textFill="WHITESMOKE" AnchorPane.rightAnchor="60.39999999999998">
-         <cursor>
-            <Cursor fx:constant="DEFAULT" />
-         </cursor>
-      </Button>
-      <Label fx:id="incorrectInfoLabel" alignment="CENTER" layoutX="23.0" layoutY="129.0" text="The username or password you entered is incorrect!" textFill="WHITESMOKE" visible="false" />
       <PasswordField fx:id="passwordTextfield" layoutX="68.0" layoutY="84.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#login" prefWidth="200.0" promptText="Password" styleClass="textfield" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0" />
-      <Button fx:id="registerButton" layoutX="60.0" layoutY="168.0" mnemonicParsing="false" onAction="#register" text="Register" textFill="WHITESMOKE">
+      <Label fx:id="incorrectInfoLabel" alignment="CENTER" layoutX="23.0" layoutY="129.0" text="The username or password you entered is incorrect!" textFill="WHITESMOKE" visible="false" />
+      <Button fx:id="loginButton" graphicTextGap="8.0" layoutX="374.0" layoutY="168.0" mnemonicParsing="false" onAction="#login" text="Login" textFill="WHITESMOKE" AnchorPane.rightAnchor="60.39999999999998">
          <cursor>
             <Cursor fx:constant="DEFAULT" />
          </cursor>
+         <graphic>
+            <ImageView fitHeight="150.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/icons8-enter-50.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="registerButton" graphicTextGap="8.0" layoutX="60.0" layoutY="168.0" mnemonicParsing="false" onAction="#register" text="Register" textFill="WHITESMOKE">
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
+         <graphic>
+            <ImageView fitHeight="150.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" style="-fx-blend-mode: dg;">
+               <image>
+                  <Image url="@icons/icons8-import-50.png" />
+               </image>
+            </ImageView>
+         </graphic>
       </Button>
    </children>
 </AnchorPane>
