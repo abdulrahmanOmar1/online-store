@@ -189,7 +189,7 @@
       </AnchorPane>
       <AnchorPane fx:id="pane_orders" layoutX="150.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="190.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <TableView fx:id="ordersTable" layoutX="15.0" layoutY="135.0" prefHeight="362.0" prefWidth="435.0" AnchorPane.topAnchor="130.0">
+            <TableView fx:id="ordersTable" layoutX="15.0" layoutY="135.0" prefHeight="380.0" prefWidth="435.0" AnchorPane.topAnchor="130.0">
                <columns>
                   <TableColumn editable="false" prefWidth="173.59999084472656" text="Order">
                      <columns>
@@ -224,6 +224,13 @@
                   </VBox>
                </children>
             </HBox>
+            <TableView fx:id="itemOrderTable" layoutX="460.0" layoutY="15.0" prefHeight="495.0" prefWidth="385.0" AnchorPane.topAnchor="15.0">
+              <columns>
+                <TableColumn fx:id="itemOrderTable_itemID" prefWidth="75.0" text="Item ID" />
+                <TableColumn fx:id="itemOrderTable_itemName" prefWidth="127.20001220703125" text="Item Name" />
+                  <TableColumn fx:id="itemOrderTable_itemPrice" prefWidth="127.20001220703125" text="Price" />
+              </columns>
+            </TableView>
          </children>
       </AnchorPane>
    </children>

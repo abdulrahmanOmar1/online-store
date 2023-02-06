@@ -3,11 +3,15 @@ package com.example.comp333_finalproject.Controllers;
 import com.example.comp333_finalproject.Classes.*;
 import com.example.comp333_finalproject.Driver;
 import com.example.comp333_finalproject.Classes.MyListener;
+import com.example.comp333_finalproject.TableClasses.ItemOrder;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -32,8 +36,22 @@ public class UserPanelController {
     private AnchorPane browserPane;
 
     @FXML
+    private AnchorPane orderPane;
+
+    @FXML
     private Button button_newOrder;
 
+    @FXML
+    private TableView<ItemOrder> itemOrderTable;
+
+    @FXML
+    private TableColumn<ItemOrder, Integer> itemOrderTable_itemID;
+
+    @FXML
+    private TableColumn<ItemOrder, String> itemOrderTable_itemName;
+
+    @FXML
+    private TableColumn<ItemOrder, Double> itemOrderTable_itemPrice;
 
 
     private final List<Item> items = new ArrayList<>();
@@ -52,14 +70,11 @@ public class UserPanelController {
 
     @FXML
     private void initialize() throws SQLException, ClassNotFoundException {
+        setValueFactoryOrderItems();
+
         label_userFullName.setText(currentUser.getFirstName() + " " + currentUser.getLastName());
         items.addAll(Driver.getItemList());
-        myListener = new MyListener() {
-            @Override
-            public void onClickListener(Item item) {
-                addItemToOrder(item);
-            }
-        };
+        myListener = item -> addItemToOrder(item);
         int column = 0;
         int row = 0;
         try {
@@ -87,19 +102,61 @@ public class UserPanelController {
     @FXML
     void browseItems(ActionEvent event) {
         browserPane.setVisible(true);
+        orderPane.setVisible(false);
     }
 
     @FXML
     void showCustomerOrders(ActionEvent event) {
         browserPane.setVisible(false);
-        System.out.println("CART:-");
-        for (Item item : currentUser.getOrder()){
-            System.out.println(item.getId() + " : " + item.getColor() + " : " + item.getName());
+        orderPane.setVisible(true);
+        try{
+            updateOrderItem();
+        } catch (SQLException | ClassNotFoundException sqlException) {
+            sqlException.printStackTrace();
         }
-        System.out.println("-----");
+
+    }
+
+    @FXML
+    void removeSelectedItem(ActionEvent event) throws SQLException, ClassNotFoundException {
+        ItemOrder selected = itemOrderTable.getSelectionModel().getSelectedItem();
+        if (selected == null)
+            return;
+
+        String deleteQuery = "DELETE FROM item_order WHERE item_order.itemID = ? AND item_order.orderID = ?";
+        DatabaseConnection databaseConnection = new DatabaseConnection();
+        Connection deleteConnection = databaseConnection.connectDB();
+        PreparedStatement deleteStatement = deleteConnection.prepareStatement(deleteQuery);
+        deleteStatement.setInt(1,selected.getItemID());
+        deleteStatement.setInt(2,currentOrder.getOrderID());
+        deleteStatement.execute();
+        updateOrderItem();
+    }
+
+    // SHOW ORDER ITEMS
+    void updateOrderItem() throws SQLException, ClassNotFoundException {
+        ObservableList<ItemOrder> data = FXCollections.observableArrayList();
+        DatabaseConnection databaseConnection = new DatabaseConnection();
+        Connection selectConnection = databaseConnection.connectDB();
+        String selectQuery = "SELECT item_order.itemID, items.IName, items.Price FROM item_order INNER JOIN items WHERE item_order.itemID = items.itemID AND item_order.orderID = ?";
+        PreparedStatement selectStatement = selectConnection.prepareStatement(selectQuery);
+        selectStatement.setInt(1,currentOrder.getOrderID());
+        ResultSet selectResult = selectStatement.executeQuery();
+        while (selectResult.next()){
+            data.add(new ItemOrder(selectResult.getInt(1),selectResult.getString(2),selectResult.getDouble(3)));
+        }
+        itemOrderTable.setItems(data);
+    }
+
+    private void setValueFactoryOrderItems() {
+        itemOrderTable_itemID.setCellValueFactory(new PropertyValueFactory<>("itemID"));
+        itemOrderTable_itemName.setCellValueFactory(new PropertyValueFactory<>("itemName"));
+        itemOrderTable_itemPrice.setCellValueFactory(new PropertyValueFactory<>("itemPrice"));
     }
 
     // BROWSER SIDE BUTTONS
+
+    // NEW ORDERS
     @FXML
     void newOrder(ActionEvent event) throws SQLException, ClassNotFoundException {
         newOrder();

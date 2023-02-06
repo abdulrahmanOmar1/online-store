@@ -5,6 +5,7 @@ import com.example.comp333_finalproject.Classes.DatabaseConnection;
 import com.example.comp333_finalproject.Classes.Item;
 import com.example.comp333_finalproject.Driver;
 import com.example.comp333_finalproject.TableClasses.CustomerOrder;
+import com.example.comp333_finalproject.TableClasses.ItemOrder;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -140,6 +141,18 @@ public class AdminController {
     @FXML
     private TextField textfield_itemQuantity;
 
+    @FXML
+    private TableView<ItemOrder> itemOrderTable;
+
+    @FXML
+    private TableColumn<ItemOrder, Integer> itemOrderTable_itemID;
+
+    @FXML
+    private TableColumn<ItemOrder, String> itemOrderTable_itemName;
+
+    @FXML
+    private TableColumn<ItemOrder, Double> itemOrderTable_itemPrice;
+
     // PANES FXML
     @FXML
     private AnchorPane pane_customers;
@@ -162,6 +175,35 @@ public class AdminController {
 
         setValueFactoryCustomerOrders();
         setCustomerOrdersSearchListeners();
+        setValueFactoryOrderItems();
+        ordersTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            try {
+                setItemOrderTableData(ordersTable.getSelectionModel().getSelectedItem().getOrderID());
+            } catch (SQLException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    // ORDER ITEMS TABLE
+    private void setValueFactoryOrderItems() {
+        itemOrderTable_itemID.setCellValueFactory(new PropertyValueFactory<>("itemID"));
+        itemOrderTable_itemName.setCellValueFactory(new PropertyValueFactory<>("itemName"));
+        itemOrderTable_itemPrice.setCellValueFactory(new PropertyValueFactory<>("itemPrice"));
+    }
+
+    private void setItemOrderTableData(int orderID) throws SQLException, ClassNotFoundException {
+        ObservableList<ItemOrder> data = FXCollections.observableArrayList();
+        DatabaseConnection databaseConnection = new DatabaseConnection();
+        Connection selectConnection = databaseConnection.connectDB();
+        String selectQuery = "SELECT item_order.itemID, items.IName, items.Price FROM item_order INNER JOIN items WHERE item_order.itemID = items.itemID AND item_order.orderID = ?";
+        PreparedStatement selectStatement = selectConnection.prepareStatement(selectQuery);
+        selectStatement.setInt(1,orderID);
+        ResultSet selectResult = selectStatement.executeQuery();
+        while (selectResult.next()){
+            data.add(new ItemOrder(selectResult.getInt(1),selectResult.getString(2),selectResult.getDouble(3)));
+        }
+        itemOrderTable.setItems(data);
     }
 
     // SETTING SEARCH LISTENERS
@@ -462,7 +504,6 @@ public class AdminController {
 
     }
 
-    // ORDERS TABLE
 
 
 }
