@@ -5,7 +5,7 @@ import java.util.Properties;
 
 public class DatabaseConnection {
     private static String dbUsername = "root";
-    private static String dbPassword = "chris336?";
+    private static String dbPassword = "abood1234";
     private static String URL = "127.0.0.1";
     private static String port = "3306";
     private static String dbName = "ecommerce";

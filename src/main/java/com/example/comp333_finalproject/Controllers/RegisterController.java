@@ -126,7 +126,7 @@ public class RegisterController {
         Connection connection = connectNow.connectDB();
         System.out.println("DB CONNECTION SUCCESSFUL");
         PreparedStatement ps = connection.prepareStatement("INSERT INTO customer (customer_first_name, " +
-                "customer_last_name, customer_city, customer_street, customer_buidling, customer_mobile1, " +
+                "customer_last_name, customer_city, customer_street, customer_building, customer_mobile1, " +
                 "customer_mobile2, customer_username, customer_password) VALUES (?,?,?,?,?,?,?,?,?)");
         int index = 1;
         for (String parameter : Arrays.asList(firstName,lastName,city,street,building,mobile1,mobile2,username,password)){
